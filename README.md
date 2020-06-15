@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-Make sure you have python 3.7 installed. Run `pipenv install` to install all dependencies.
+This repository supports python 3.7. Install `pipenv` and create a virtual environment using `pipenv shell`. Run `pipenv install` to install all dependencies.
 
 ## Get Unemployment Insurance Data
 
