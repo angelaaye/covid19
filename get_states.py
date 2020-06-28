@@ -10,4 +10,4 @@ class UnemploymentInsurance(scrapy.Spider):
         abbrevs = response.xpath('//*[@id="states"]/option/@value').getall()
         with open("states.txt", "w") as f:
             for s, a in zip(states, abbrevs):
-                f.write(f"{s} {a}\n")
+                f.write(f"{s},{a}\n")

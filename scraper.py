@@ -39,7 +39,7 @@ if __name__ == "__main__":
     result = {}
 
     for state in states:
-        state = state.split()
+        state = state.split(',')
         get_weekly_state_data(state[0], state[1], url, result)
 
     with open("UI.json", "w") as f:
