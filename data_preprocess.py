@@ -75,10 +75,10 @@ for state_data in UI_data[1:]: # ignore header
         result[-1][week_idx+i] = 1
         state_week_idx = headers.index(f"{state_data[0]} x t")
         result[-1][state_week_idx] = i+1
-        if i == 0: # first week, set COVID_(s,t) to 1
-            result[-1][1] = 1
+        if i == 0: # first week
+            result[-1][1] = 1 if int(cases_row[i+1]) > 0 else 0
         if i > 0: # check if # of cases is greater than last week
-            if int(cases_row[i+1]) >= int(cases_row[i]):
+            if int(cases_row[i+1]) > int(cases_row[i]):
                 result[-1][1] = 1
         for key in week_to_month_map.keys():
             if i+1 in week_to_month_map[key]:
