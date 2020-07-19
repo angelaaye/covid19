@@ -1,63 +1,101 @@
-"""
-Take daily US COVID-19 cases data by county and process it to be a weekly-based data by state.
-Output US_total_weekly_cases.csv:
-State, Total cases by end of first week, Total cases by end of second week,  ...
-
-Output US_new_weekly_cases.csv:
-State, New cases by end of first week, New cases by end of second week, ...
-
-Since the unemployment claims data is also weekly and each week ends on a Saturday, we will follow the same format here.
-Therefore, we will save the data by 01/25, 02/01, 02/08, ... since the data starts from 01/22.
-"""
-
 import csv
-from collections import defaultdict
+import json
+
 
 with open("data/states.txt", "r") as f:
     states = f.read().splitlines()
 
-state_names = set()
+state_names = []
 for state in states:
-    state_names.add(state.split(',')[0].strip()) # Because Oklahoma has a space after it in states.txt
+    state_names.append(state.split(',')[0].strip())
 
-total_data = {}
-new_data = {}
-with open('data/US_daily_cases.csv', newline='') as csvfile:
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        curr_state = row['Province_State']
-        if curr_state in state_names:
-            if curr_state not in total_data:
-                total_data[curr_state] = defaultdict(int)
-                new_data[curr_state] = defaultdict(int)
-            days = 0
-            prev_week = 0
-            for key in row.keys():
-                if not key.endswith('20'): # not daily cases
-                    continue
-                days += 1
-                if key.startswith('1/25') or days == 7:
-                    total_data[curr_state][key] += int(row[key])
-                    new_data[curr_state][key] += (int(row[key]) - prev_week)
-                    days = 0
-                    prev_week = int(row[key])
+#####################################################################
+################# GET HEADERS FOR CSV FILE ##########################
+#####################################################################
+def get_headers():
+    headers = []
+    headers.append("Y_(s,t)")
+    headers.append("COVID_(s,t)")
+    headers.extend(state_names)
 
-dummy_state = list(total_data.keys())[0]
-fields = [week for week in total_data[dummy_state]]
-fields.insert(0, "State")
+    # From 01/25 to 05/30 there are 19 weeks
+    for i in range(1, 20):
+        headers.append(f"WEEK{i}")
 
-with open("data/US_total_weekly_cases.csv", "w") as f:
-    w = csv.DictWriter(f, fields)
-    w.writeheader()
-    for key, val in total_data.items():
-        row = {'State': key}
-        row.update(val)
-        w.writerow(row)
+    for state in state_names:
+        headers.append(f"{state} x t")
 
-with open("data/US_new_weekly_cases.csv", "w") as f:
-    w = csv.DictWriter(f, fields)
-    w.writeheader()
-    for key, val in new_data.items():
-        row = {'State': key}
-        row.update(val)
-        w.writerow(row)
+    name = "data/Industry"
+    with open(f"{name}.json") as json_file: 
+        data = json.load(json_file) 
+
+    header_keys = list(data[list(data.keys())[0]].keys()) # Industry types
+    for key in header_keys[1:]: # ignore Industry column
+        if key.startswith("Industry"):
+            break
+        headers.append(key.split('_')[0])
+    return headers
+
+
+#####################################################################
+################# LOAD CSV DATA TO FILE #############################
+#####################################################################
+headers = get_headers()
+# print(headers)
+result = []
+# Start with UI claims
+with open('data/UI.csv', newline='') as csvfile:
+    UI_data = list(csv.reader(csvfile))
+
+with open('data/US_new_weekly_cases.csv', newline='') as csvfile:
+    cases_data = list(csv.reader(csvfile))
+
+with open('data/Industry.csv', newline='') as csvfile:
+    sector_data = list(csv.reader(csvfile))
+
+week_to_month_map = {"Jan": [1,2], "Feb": [3,4,5,6], "Mar": [7,8,9,10], "Apr": [11,12,13,14,15], "May": [16,17,18,19]}
+
+for state_data in UI_data[1:]: # ignore header
+    # find corresponding row in cases_data
+    for i, row in enumerate(cases_data):
+        if row[0] == state_data[0]:
+            cases_row = cases_data[i]
+            break
+    for i, row in enumerate(sector_data):
+        if row[0] == state_data[0]:
+            sector_row = sector_data[i]
+            break      
+    for i, claim in enumerate(state_data[1:]): # ignore state
+        result.append([])
+        result[-1] = [0] * len(headers)
+        result[-1][0] = int(claim) # get UI claim count
+        state_idx = headers.index(state_data[0])
+        result[-1][state_idx] = 1
+        week_idx = headers.index("WEEK1")
+        result[-1][week_idx+i] = 1
+        state_week_idx = headers.index(f"{state_data[0]} x t")
+        result[-1][state_week_idx] = i+1
+        if i == 0: # first week, set COVID_(s,t) to 1
+            result[-1][1] = 1
+        if i > 0: # check if # of cases is greater than last week
+            if int(cases_row[i+1]) >= int(cases_row[i]):
+                result[-1][1] = 1
+        for key in week_to_month_map.keys():
+            if i+1 in week_to_month_map[key]:
+                month = key
+        sector_header = sector_data[0]
+        for i, h in enumerate(sector_header):
+            if h.endswith(month) and not h.startswith("Industry"):
+                sector = h.split('_')[0]
+                header_idx = headers.index(sector)
+                if int(sector_row[i]) > 0:
+                    result[-1][header_idx] = 1
+
+data_file = open(f"data/data.csv", 'w') 
+csv_writer = csv.writer(data_file) 
+csv_writer.writerow(headers) 
+
+for row in result: 
+    csv_writer.writerow(row)
+
+data_file.close() 

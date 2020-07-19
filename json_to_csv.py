@@ -31,7 +31,7 @@ def UI_json_to_csv():
     dummy_state = list(data.keys())[0]
     dummy_records = data[dummy_state] # List of dictionaries
     header_keys = []
-    for rec in dummy_records:
+    for rec in dummy_records[3:-2]: # only get data from 01/25 to 05/30
         header_keys.append(rec["Filed Week Ended"])
     header_keys.insert(0, "State")
     
@@ -41,8 +41,8 @@ def UI_json_to_csv():
     
     for key in data: 
         records = data[key]
-        row = [key] # State
-        for rec in records:
+        row = [key.strip()] # State
+        for rec in records[3:-2]:
             row.append(int(rec["Initial Claims"].replace(',', '')))
         csv_writer.writerow(row)
     
