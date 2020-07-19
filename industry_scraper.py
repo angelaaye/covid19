@@ -17,7 +17,7 @@ def get_weekly_state_data(state, url, result, month):
 
     if state not in result:
         result[state] = {}
-        
+
     for row in rows[2:]:
         industry = row.find("th")
         columns = row.find_all("td")
@@ -29,7 +29,7 @@ def get_weekly_state_data(state, url, result, month):
 
 
 if __name__ == "__main__":
-    with open("states.txt", "r") as f:
+    with open("data/states.txt", "r") as f:
         states = f.read().splitlines()
 
     result = {}
@@ -41,5 +41,5 @@ if __name__ == "__main__":
             state = state.split(',')
             get_weekly_state_data(state[0].strip(), url, result, month) # Because Oklahoma has a space after it in states.txt
 
-    with open("Industry.json", "w") as f:
+    with open("data/Industry.json", "w") as f:
         json.dump(result, f)

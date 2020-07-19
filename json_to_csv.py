@@ -2,7 +2,7 @@ import json
 import csv 
   
 def industry_json_to_csv():
-    name = "Industry"
+    name = "data/Industry"
     with open(f"{name}.json") as json_file: 
         data = json.load(json_file) 
     
@@ -24,7 +24,7 @@ def industry_json_to_csv():
 
 
 def UI_json_to_csv():
-    name = "UI"
+    name = "data/UI"
     with open(f"{name}.json") as json_file: 
         data = json.load(json_file) 
     

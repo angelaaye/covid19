@@ -13,7 +13,7 @@ Therefore, we will save the data by 01/25, 02/01, 02/08, ... since the data star
 import csv
 from collections import defaultdict
 
-with open("states.txt", "r") as f:
+with open("data/states.txt", "r") as f:
     states = f.read().splitlines()
 
 state_names = set()
@@ -22,7 +22,7 @@ for state in states:
 
 total_data = {}
 new_data = {}
-with open('US_daily_cases.csv', newline='') as csvfile:
+with open('data/US_daily_cases.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         curr_state = row['Province_State']
@@ -46,7 +46,7 @@ dummy_state = list(total_data.keys())[0]
 fields = [week for week in total_data[dummy_state]]
 fields.insert(0, "State")
 
-with open("US_total_weekly_cases.csv", "w") as f:
+with open("data/US_total_weekly_cases.csv", "w") as f:
     w = csv.DictWriter(f, fields)
     w.writeheader()
     for key, val in total_data.items():
@@ -54,7 +54,7 @@ with open("US_total_weekly_cases.csv", "w") as f:
         row.update(val)
         w.writerow(row)
 
-with open("US_new_weekly_cases.csv", "w") as f:
+with open("data/US_new_weekly_cases.csv", "w") as f:
     w = csv.DictWriter(f, fields)
     w.writeheader()
     for key, val in new_data.items():

@@ -42,7 +42,11 @@ if __name__ == "__main__":
         state = state.split(',')
         get_weekly_state_data(state[0], state[1], url, result)
 
-    with open("UI.json", "w") as f:
+    import os
+    if not os.path.exists("data/"):
+        os.mkdir("data/")
+
+    with open("data/UI.json", "w") as f:
         json.dump(result, f)
 
 
