@@ -23,6 +23,31 @@ def industry_json_to_csv():
     data_file.close() 
 
 
+def industry_percentage_json_to_csv():
+    name = "data/industry_percentage"
+    with open(f"{name}.json") as json_file: 
+        data = json.load(json_file) 
+    
+    header_keys = list(data[list(data.keys())[0]].keys()) # Industry types
+    header_keys.insert(0, "State")
+    
+    data_file = open(f"{name}.csv", 'w') 
+    csv_writer = csv.writer(data_file) 
+    csv_writer.writerow(header_keys) 
+    
+    for key in data: 
+        values = data[key].values()
+        row = [key] # State
+        for v in values:
+            if v == "\u00a0":
+                row.append(0)
+            else:
+                row.append(v[:-1])
+        csv_writer.writerow(row)
+    
+    data_file.close() 
+
+
 def UI_json_to_csv():
     name = "data/UI"
     with open(f"{name}.json") as json_file: 
@@ -51,4 +76,5 @@ def UI_json_to_csv():
 
 if __name__ == "__main__":
     industry_json_to_csv()
+    industry_percentage_json_to_csv()
     UI_json_to_csv()

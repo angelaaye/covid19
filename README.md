@@ -11,17 +11,17 @@ First run `scrapy runspider get_states.py` to get a list of all the states, whic
 
 ## Get Weekly COVID-19 Cases Data
 
-Run `python covid_cases_preprocess.py` to process daily US COVID-19 data by state to weekly data. The original data is found in the repo [here](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series).
+Run `python covid_cases_preprocess.py` to process daily US COVID-19 data by state to weekly data. The original data is found in the repo [here](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series) in the csv file `time_series_covid19_confirmed_US.csv`.
 
 
 ## Get Monthly Industry Data
 
-Run `python industry_scraper.py` to get monthly number of unemployment insurance claimants by industry. The information is collected from [Deparment of Labor](https://oui.doleta.gov/unemploy/chariu.asp), and will be stored as `Industry.json` for months January to May.
+Run `python industry_scraper.py` to get monthly number of unemployment insurance claimants by industry. The information is collected from [Deparment of Labor](https://oui.doleta.gov/unemploy/chariu.asp), and will be stored as `industry.json` for months January to July.
 
 
 ## Get CSV Data
 
-Run `python json_to_csv.py` to convert `UI.json` and `Industry.json` to `UI.csv` and `Industry.csv`, respectively.
+Run `python json_to_csv.py` to convert `UI.json` and `industry.json` to `UI.csv` and `industry.csv`, respectively.
 
 
 ## Get Preprocessed Data Input

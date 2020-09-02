@@ -24,7 +24,7 @@ def get_weekly_state_data(state, url, result, month):
         if industry and industry.text == "Industry":
             found = True
         if found: 
-            data[f"{industry.text}_{month}"] = columns[0].text
+            data[f"{industry.text}_{month}"] = columns[1].text
     result[state].update(data)
 
 
@@ -41,5 +41,5 @@ if __name__ == "__main__":
             state = state.split(',')
             get_weekly_state_data(state[0].strip(), url, result, month) # Because Oklahoma has a space after it in states.txt
 
-    with open("data/industry.json", "w") as f:
+    with open("data/industry_percentage.json", "w") as f:
         json.dump(result, f)
