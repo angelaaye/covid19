@@ -19,7 +19,7 @@ Run `python covid_cases_preprocess.py` to process daily US COVID-19 data by stat
 
 ## Get Monthly Industry Data
 
-Run `python industry_scraper.py` to get monthly number of unemployment insurance claimants by industry. The information is collected from [Deparment of Labor](https://oui.doleta.gov/unemploy/chariu.asp), and will be stored as `industry.json` for months January to July.
+Run `industry_scraper.py` to get monthly number of unemployment insurance claimants by industry. The information is collected from [Deparment of Labor](https://oui.doleta.gov/unemploy/chariu.asp), and will be stored as `industry.json` for months January to July. To obtain the percentage data instead of the actual values, use the script `industry_scraper_percentage.py`. 
 
 
 ## Get CSV Data
