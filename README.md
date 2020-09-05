@@ -1,5 +1,8 @@
 # COVID-19 Project
 
+## About
+In this repo, the impact of the COVID-19 spreading speed on unemployment claims for each state in the U.S. across various sectors is investigated using a difference-in-differences (DID) approach with state-specific time trend techniques. Data forecasting is performed using machine learning methods including linear regression and neural networks. We use panel data concerning the weekly unemployment claims and cumulative cases in each state since the inception of the coronavirus outbreak. This paper strives to investigate the causal effect of the spreading speed of COVID-19 in the U.S. on weekly unemployment claims in different states across sectors as well as forecast of unemployment insurance (UI) claims patterns. We hope the thesis will provide guidance on the implementation of Central Bank's economy revival policy. 
+
 ## Dependencies
 
 This repository supports python 3.7. Install `pipenv` and create a virtual environment using `pipenv shell`. Run `pipenv install` to install all dependencies.
