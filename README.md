@@ -26,4 +26,4 @@ Run `python json_to_csv.py` to convert `UI.json` and `industry.json` to `UI.csv`
 
 ## Get Preprocessed Data Input
 
-Run `python data_preprocess.py` to get the csv data input to the linear regression model, which is saved as `data.csv`.
+Run the script `data_preprocess.py` to get the csv data input to the linear regression model, which is saved as `data.csv`. For test data on UI claims in July, run `test_data_preprocess.py`. For PanelOLS analysis, run the scripts `panelols_data_preprocess.py` to get the data in the desired panel data format. 

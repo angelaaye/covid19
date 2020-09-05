@@ -21,7 +21,7 @@ def get_headers():
     # From 01/25 to 05/30 there are 19 weeks
     # From 01/25 to 06/27 there are 23 weeks (train data)
     # from 06/27 to 08/01 there are 5 weeks (test data)
-    for i in range(24, 29):
+    for i in range(1, 29):
         headers.append(f"WEEK{i}")
 
     for state in state_names:
